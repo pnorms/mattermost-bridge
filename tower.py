@@ -36,6 +36,7 @@ def process_payload(hook_path, data):
     text_out = ""
     attachment_text = ""
     attach_extra = ""
+    color = success_color
 
     # Jobs
     if "friendly_name" in data:
@@ -58,6 +59,23 @@ def process_payload(hook_path, data):
                            "**started**: " + started + "\n" \
                            "**credential**: " + credential + "\n" \
                            "**created_by**: " + created_by + "\n"
+            if status != "successful":
+                color = error_color
+
+        elif data["friendly_name"] == "Workflow Job":
+            status = data["status"]
+            name = data["name"]
+            started = data["started"]
+            created_by = data["created_by"]
+            url = data["url"]
+            # Assemble
+            result = "[" + status + "](" + url + ")"
+            attach_extra = "**name**: " + name + "\n" + \
+                           "**started**: " + started + "\n" \
+                           "**created_by**: " + created_by + "\n"
+            if status != "successful":
+                color = error_color
+
         else:
             result = "** UNKNOWN NOTIFICATION TYPE **: " + data["friendly_name"]
 
@@ -76,7 +94,7 @@ def process_payload(hook_path, data):
     if len(attach_extra) > 0:
         attachment_text += "\n" + attach_extra
 
-    return send_webhook(hook_path, text_out, attachment_text, success_color)
+    return send_webhook(hook_path, text_out, attachment_text, color)
 
 
 def send_webhook(hook_path, text_out, attachment_text, attachment_color):
