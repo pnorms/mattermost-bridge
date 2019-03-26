@@ -1,8 +1,8 @@
-# Ansible Tower Webhook Bridge for Mattermost
+# Webhook Bridges for Mattermost
 
-This repository is contains a Python Flask application that accepts webhooks from [Ansible Tower
-Server] and forwards them to the specified
-channel in a [Mattermost](https://mattermost.com) server via an incoming webhook, based on: https://github.com/cvitter/mattermost-bitbucket-bridge.git
+This repository is contains a Python Flask application that accepts webhooks from [Any Source] and forwards them to the specified
+channel in a [Mattermost](https://mattermost.com) server via an incoming webhook, pretty heavily modified version of:
+https://github.com/cvitter/mattermost-bitbucket-bridge.git
 
 The bridge application supports job notifications and generic body notifications:
  
@@ -13,22 +13,39 @@ The bridge application supports job notifications and generic body notifications
 * Job success
 * Job failure
 * Test notification
+ 
+ # Supported Bitbucket Events
+ 
+ The following events are supported and **tested** in the current version of this application:
+ 
+* Pull request comment added
+* Pull request comment deleted
+* Pull request comment edited
+* Pull request declined
+* Pull request deleted
+* Pull request merged
+* Pull request modified
+* Pull request opened
+* Repository commit comment added
+* Repository commit comment deleted
+* Repository commit comment edited
+* Repository forked
+* Repository refs updated
 
 ## Setup the Flask Application
 
 The following steps
 
 1. Log into the machine that will host the Python Flask application;
-2. Clone this repository to your machine: `git clone https://github.com/pnorms/mattermost-tower-bridge.git`;
-3. Make a copy of `config.sample`: `cp config.sample config.json`
-4. Edit `config.json` to update the following fields as needed:
+2. Clone this repository to your machine: `git clone https://github.com/pnorms/mattermost-bridge.git`;
+3. Edit `config.json` to update the following fields as needed:
    * Application host address and port (generally debug should be left set to `false`;
    * Mattermost server_url and the user name or icon to override the webhook with if desired;
    * And the base url of your Ansible Tower server.
-5. Run the Flask application:
+4. Run the Flask application:
 
 ```
-sudo python Ansible Tower.py >> Ansible Tower.log 2>&1 &
+sudo python base.py >> base.log 2>&1 &
 ```
 
 # Configure Mattermost
@@ -48,28 +65,28 @@ http://flask-application-url:port/hooks/[hookcode]
 
 Then select the `Repository` and `Pull request` events you want to be notified about and click on `Create` to create the webhook.
 
+# Configure Bitbucket
+
+Within Bitbucket webhooks are configured and managed at the individual repository level. From within a repository click on the `Repository Settings` icon (cog) in the left hand side bar and then click on Webhooks under repository settings. To create a new webhook click on the `Create webhook` button. In the `Create webhook` form fill in the new webhook's `Name` and `URL`. The URL will look like:
+
 # Docker Installation
 
-To use the docker based installation created based on the Bitbucket project https://github.com/cvitter/mattermost-bitbucket-bridge.git:
-
-1. Log into the machine that will host the Python Flask application;
-2. Clone this repository to your machine: `git clone https://github.com/pnorms/mattermost-tower-bridge.git`;
-3. Make a copy of `config.sample`: `cp config.sample config.json`
-4. Edit `config.json` to update the following fields as needed:
-   * Application host address and port (generally debug should be left set to `false`;
-   * Mattermost server_url and the user name or icon to override the webhook with if desired;
-   * And the base url of your Ansible Tower server.
-5. Build the docker image (replace `DOCKER_IMAGE_NAME` with your name of choice): 
+1. Build the docker image (replace `DOCKER_IMAGE_NAME` with your name of choice): 
   - `docker build -t DOCKER_IMAGE_NAME .`
   - `docker pull DOCKER_IMAGE_NAME`
-6. And run the docker image: `docker run -d -p 5007:5007 DOCKER_IMAGE_NAME`
+2. And run the docker image: `docker run -d -p 8080:8080 DOCKER_IMAGE_NAME`
+
+# HELM!
+1. Run helm package mattermost-bridges-dev
+2. Deploy the package to your repository
+3. Launch the item from your kub connected repo
 
 # Make this Project Better (Questions, Feedback, Pull Requests Etc.)
 
 **Help!** If you like this project and want to make it even more awesome please contribute your ideas,
 code, etc.
 
-If you have any questions, feedback, suggestions, etc. please submit them via issues here: https://github.com/pnorms/mattermost-tower-bridge/issues
+If you have any questions, feedback, suggestions, etc. please submit them via issues here: https://github.com/pnorms/mattermost-bridge/issues
 
 If you find errors please feel to submit pull requests. Any help in improving this resource is appreciated!
 

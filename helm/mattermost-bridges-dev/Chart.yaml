@@ -1,0 +1,8 @@
+apiVersion: v1
+appVersion: "1.0"
+description: A Helm chart for Mattermost Webhook Bridges
+name: mattermost-bridges-dev
+version: 0.1.0
+maintainers:
+ - name: Patrick Norman
+   email: pnorms@gmail.com

@@ -1,0 +1,31 @@
+{
+    "application" : {
+        "host" : "0.0.0.0",
+        "port" : 8080,
+        "debug" : true
+    },
+    "colors" : {
+        "error" : "#ff0000",
+        "alert" : "#ffff00",
+        "success" : "#28c12b"
+    },
+    "mattermost" : {
+        "server_url" : "https://mm.yourdomain.com/"
+    },
+	"applications" : {
+		"bitbucket" : {
+			"name" : "BitBucket",
+			"url" : "https://git.yourdomain.com/",
+			"username" : "BitBucket",
+			"icon" : "https://mm.yourdomain.com/api/v4/emoji/{someid}/image",
+			"include_script" : "bitbucket.py"
+		},
+		"tower" : {
+			"name" : "Tower",
+			"url" : "https://tower.yourdomain.com/",
+			"username" : "AnsibleTower",
+			"icon" : "https://mm.yourdomain.com/api/v4/emoji/{someid}/image",
+			"include_script" : "tower.py"
+		}
+	}
+}
