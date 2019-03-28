@@ -5,7 +5,7 @@ set -x
 OPTIND=1
 IMAGE_NAME=mattermost-bridges
 IMAGE_TAG=latest
-DOCKER_REGISTRY=artifactory.elliottmgmt.com/docker-local/devops/integrations
+DOCKER_REGISTRY=repo.yourdomain.com/integrations
 DATE_TAG=$(date "+%m-%d-%Y")
 
 function show_help {
